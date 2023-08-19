@@ -15,6 +15,8 @@ class AuthServices {
 
       if (response.statusCode == 200) {
         Get.snackbar('Signup Status:', 'Signup Successful');
+      }else{
+          Get.snackbar('Signup Status:', 'Signup Failed');
       }
       print(response);
       return response;
@@ -29,6 +31,8 @@ class AuthServices {
           {'username': username, 'password': password});
       if (response.statusCode == 200) {
         Get.snackbar('Login Status:', 'Login Successful');
+      } else {
+        Get.snackbar('Error:', 'Login Failed');
       }
       print(response.statusCode);
       print(response.body);
@@ -45,6 +49,8 @@ class AuthServices {
           if (response.statusCode == 200) {
                 Get.off(const ChangePasswordScreen());
              Get.snackbar('OTP Sent:', 'OTP Sent to your email');
+      } else {
+        Get.snackbar('Error:', 'OTP Failed to Send Try again');
       }
       return response;
     } catch (e) {
@@ -60,9 +66,11 @@ class AuthServices {
 
           if(response.statusCode==200){
               Get.off(const LoginScreen(),transition: Transition.leftToRight, duration: Duration(seconds: 1));
-             Get.snackbar('Status:', 'Password Change was successful');
-          
+              Get.snackbar('Status:', 'Password Change was successful');
+          }else{
+            Get.snackbar('Error:', 'Password Change was unsuccessful');
           }
+
       return response;
     } catch (e) {
       print(e);

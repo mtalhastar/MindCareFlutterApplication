@@ -232,8 +232,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   onPressed: () {
                                     if (!isLogin) {
                                       Get.off(const ForgotPasswordScreen(),
-                                          transition: Transition.circularReveal,
-                                          duration: const Duration(seconds: 6));
+                                          transition: Transition.fadeIn,
+                                          duration: const Duration(seconds: 1));
                                     }
                                   },
                                   child: const Text(

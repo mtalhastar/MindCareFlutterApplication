@@ -68,7 +68,7 @@ class AuthServices {
               Get.off(const LoginScreen(),transition: Transition.leftToRight, duration: Duration(seconds: 1));
               Get.snackbar('Status:', 'Password Change was successful');
           }else{
-            Get.snackbar('Error:', 'Password Change was unsuccessful');
+            Get.snackbar('Error:', 'Password Change was unsuccessful'); 
           }
 
       return response;

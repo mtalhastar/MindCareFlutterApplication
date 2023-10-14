@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:mindcareflutterapp/screens/changePassword.dart';
 import 'package:mindcareflutterapp/services/authServices.dart';
+
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
@@ -14,7 +15,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   bool isLogin = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
+
   String username = '';
 
   void saveForm() {
@@ -23,11 +24,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       return;
     }
     _formKey.currentState!.save();
-   
-      AuthServices().ForgotPassword(username);
-    
+
+    AuthServices().ForgotPassword(username);
+
     _formKey.currentState!.reset();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,32 +66,28 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Enter Username',
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 0.2,
-                                    color: Color.fromARGB(255, 255, 255, 255)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 3, 19,
-                                        243)), // Change this color to the desired border color
-                              ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 255, 252, 252),
+                                borderRadius: BorderRadius.circular(20.0)),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                  labelText: 'Enter Username',
+                                  border: InputBorder.none),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value == null ||
+                                    value.trim().length <= 0 ||
+                                    value.isEmpty) {
+                                  return 'Invalid username';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                username = value!;
+                              },
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null ||
-                                  value.trim().length <= 0 ||
-                                  value.isEmpty) {
-                                return 'Invalid username';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              username = value!;
-                            },
                           ),
                           const SizedBox(
                             height: 30,

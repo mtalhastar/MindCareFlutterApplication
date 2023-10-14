@@ -93,52 +93,47 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Username',
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 0.2,
-                                    color: Color.fromARGB(255, 255, 255, 255)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 3, 19,
-                                        243)), // Change this color to the desired border color
-                              ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                               color: Color.fromARGB(255, 255, 252, 252),
+                               borderRadius: BorderRadius.circular(20.0)
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null ||
-                                  value.trim().length <= 0 ||
-                                  value.isEmpty) {
-                                return 'Invalid username';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              username = value!;
-                            },
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Username',
+                                border: InputBorder.none
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value == null ||
+                                    value.trim().length <= 0 ||
+                                    value.isEmpty) {
+                                  return 'Invalid username';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                username = value!;
+                              },
+                            ),
                           ),
                           if (isLogin)
                             const SizedBox(
                               height: 20,
                             ),
                           if (isLogin)
+                               Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                               color: Color.fromARGB(255, 255, 252, 252),
+                               borderRadius: BorderRadius.circular(20.0)
+                            ),
+                            child:
                             TextFormField(
                               decoration: const InputDecoration(
                                 labelText: 'Email',
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 0.2,
-                                      color:
-                                          Color.fromARGB(255, 255, 255, 255)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 3, 19,
-                                          243)), // Change this color to the desired border color
-                                ),
+                                border: InputBorder.none
                               ),
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
@@ -154,22 +149,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 email = value!;
                               },
                             ),
+                               ),
                           const SizedBox(
                             height: 20,
                           ),
+                             Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                               color: Color.fromARGB(255, 255, 252, 252),
+                               borderRadius: BorderRadius.circular(20.0)
+                            ),
+                            child:
                           TextFormField(
                             decoration: const InputDecoration(
                               labelText: 'Password',
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 0.2,
-                                    color: Color.fromARGB(255, 255, 255, 255)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 3, 19,
-                                        243)), // Change this color to the desired border color
-                              ),
+                              border: InputBorder.none
                             ),
                             obscureText: true,
                             keyboardType: TextInputType.visiblePassword,
@@ -185,6 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               password = value!;
                             },
                           ),
+                             ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -208,6 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
+                          SizedBox(height: 10,),
                           Row(children: [
                             const SizedBox(
                               height: 2,

@@ -227,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               TextButton(
                                   onPressed: () {
                                     if (!isLogin) {
-                                      Get.off(const ForgotPasswordScreen(),
+                                      Get.to(const ForgotPasswordScreen(),
                                           transition: Transition.fadeIn,
                                           duration: const Duration(seconds: 1));
                                     }

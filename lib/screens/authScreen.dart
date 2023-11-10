@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     _formKey.currentState!.save();
     if (!isLogin) {
-      AuthServices().Login(username, password);
+      AuthServices().Login(email, password);
     } else {
       AuthServices().SignUp(username, email, password);
     }
@@ -49,20 +49,16 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     if (!isLogin) {
-      maxHeight = 300;
-    } else {
       maxHeight = 400;
+    } else {
+      maxHeight = 500;
     }
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
         alignment: Alignment.center,
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: [
-          Color.fromARGB(255, 234, 241, 255),
-          Color.fromARGB(255, 255, 249, 223)
-        ])),
+        decoration: const BoxDecoration(color: Colors.white),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -70,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                   height: 150,
                   width: 150,
-                  child: Image.asset('assets/images/mindcare-logo.png')),
+                  child: Image.asset('assets/images/image-remove.png')),
               const SizedBox(
                 height: 26,
               ),
@@ -93,17 +89,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(
                             height: 20,
                           ),
+                          if (isLogin)
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 5),
                             decoration: BoxDecoration(
-                               color: Color.fromARGB(255, 255, 252, 252),
-                               borderRadius: BorderRadius.circular(20.0)
-                            ),
+                                color: Color.fromARGB(98, 241, 241, 241),
+                                borderRadius: BorderRadius.circular(20.0)),
                             child: TextFormField(
                               decoration: const InputDecoration(
-                                labelText: 'Username',
-                                border: InputBorder.none
-                              ),
+                                  hintText: 'Username',
+                                  border: InputBorder.none),
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
                                 if (value == null ||
@@ -122,64 +118,61 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(
                               height: 20,
                             ),
-                          if (isLogin)
-                               Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                               color: Color.fromARGB(255, 255, 252, 252),
-                               borderRadius: BorderRadius.circular(20.0)
-                            ),
-                            child:
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                labelText: 'Email',
-                                border: InputBorder.none
+                          
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 5),
+                              decoration: BoxDecoration(
+                                  color: Color.fromARGB(98, 241, 241, 241),
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  hintText: 'Email',
+                                  border: InputBorder.none,
+                                ),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value == null ||
+                                      value.trim().length <= 0 ||
+                                      value.isEmpty ||
+                                      !value.contains('@')) {
+                                    return 'Invalid email address';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  email = value!;
+                                },
                               ),
-                              keyboardType: TextInputType.emailAddress,
+                            ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(98, 241, 241, 241),
+                                borderRadius: BorderRadius.circular(20.0)),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                  hintText: 'Password',
+                                  border: InputBorder.none),
+                              obscureText: true,
+                              keyboardType: TextInputType.visiblePassword,
                               validator: (value) {
                                 if (value == null ||
                                     value.trim().length <= 0 ||
-                                    value.isEmpty ||
-                                    !value.contains('@')) {
-                                  return 'Invalid email address';
+                                    value.isEmpty) {
+                                  return 'Invalid Password';
                                 }
                                 return null;
                               },
                               onSaved: (value) {
-                                email = value!;
+                                password = value!;
                               },
                             ),
-                               ),
-                          const SizedBox(
-                            height: 20,
                           ),
-                             Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                               color: Color.fromARGB(255, 255, 252, 252),
-                               borderRadius: BorderRadius.circular(20.0)
-                            ),
-                            child:
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
-                              border: InputBorder.none
-                            ),
-                            obscureText: true,
-                            keyboardType: TextInputType.visiblePassword,
-                            validator: (value) {
-                              if (value == null ||
-                                  value.trim().length <= 0 ||
-                                  value.isEmpty) {
-                                return 'Invalid Password';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              password = value!;
-                            },
-                          ),
-                             ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -188,10 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 18),
                               decoration: const BoxDecoration(
-                                gradient: LinearGradient(colors: [
-                                  Colors.blue,
-                                  Color.fromARGB(255, 22, 7, 234)
-                                ]),
+                                color: Colors.green,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(40.0)),
                               ),
@@ -203,7 +193,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Row(children: [
                             const SizedBox(
                               height: 2,
@@ -220,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       : 'Create an account?',
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      color: Color.fromARGB(255, 65, 52, 255)),
+                                      color: Colors.green),
                                 )),
                             if (!isLogin) const Spacer(),
                             if (!isLogin)
@@ -236,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     'Forgot Password',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        color: Color.fromARGB(255, 23, 7, 255),
+                                        color: Colors.green,
                                         fontSize: 13),
                                   )),
                           ])

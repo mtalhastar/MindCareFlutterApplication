@@ -54,7 +54,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               SizedBox(
                   height: 150,
                   width: 150,
-                  child: Image.asset('assets/images/mindcare-logo.png')),
+                  child: Image.asset('assets/images/image-remove.png')),
               const SizedBox(
                 height: 30,
               ),

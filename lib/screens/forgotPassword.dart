@@ -16,7 +16,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   bool isLogin = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String username = '';
+  String email = '';
 
   void saveForm() {
     final validation = _formKey.currentState!.validate();
@@ -25,7 +25,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     }
     _formKey.currentState!.save();
 
-    AuthServices().ForgotPassword(username);
+    AuthServices().ForgotPassword(email);
 
     _formKey.currentState!.reset();
   }
@@ -49,7 +49,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               SizedBox(
                   height: 150,
                   width: 150,
-                  child: Image.asset('assets/images/mindcare-logo.png')),
+                  child: Image.asset('assets/images/image-remove.png')),
               const SizedBox(
                 height: 26,
               ),
@@ -67,25 +67,25 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             height: 20,
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
                             decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 255, 252, 252),
                                 borderRadius: BorderRadius.circular(20.0)),
                             child: TextFormField(
                               decoration: const InputDecoration(
-                                  labelText: 'Enter Username',
+                                  hintText: 'Enter Email',
                                   border: InputBorder.none),
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
                                 if (value == null ||
-                                    value.trim().length <= 0 ||
+      
                                     value.isEmpty) {
-                                  return 'Invalid username';
+                                  return 'Invalid Email';
                                 }
                                 return null;
                               },
                               onSaved: (value) {
-                                username = value!;
+                                email = value!;
                               },
                             ),
                           ),
@@ -97,10 +97,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 18),
                               decoration: const BoxDecoration(
-                                gradient: LinearGradient(colors: [
-                                  Colors.blue,
-                                  Color.fromARGB(255, 22, 7, 234)
-                                ]),
+                                color: Colors.green,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(40.0)),
                               ),

@@ -1,5 +1,4 @@
 import 'package:http/http.dart' as http;
-import 'dart:io';
 import 'package:get/get.dart';
 import 'package:mindcareflutterapp/screens/changePassword.dart';
 import 'package:mindcareflutterapp/screens/authScreen.dart';
@@ -16,7 +15,7 @@ class AuthServices {
 
       if (response.statusCode == 200) {
         Get.snackbar('Signup Status:', 'Signup Successful');
-        Get.off(QuestionScreen());
+        Get.off(const QuestionScreen());
       } else {
         Get.snackbar('Signup Status:', 'Signup Failed');
       }
@@ -32,7 +31,7 @@ class AuthServices {
       var response = await _connect.post('http://10.0.2.2:8000/login/',
           {'email': email, 'password': password});
       if (response.statusCode == 200) {
-        Get.off(QuestionScreen());
+        Get.off(const QuestionScreen());
         Get.snackbar('Login Status:', 'Login Successful');
       } else {
         Get.snackbar('Error:', 'Login Failed');

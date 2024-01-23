@@ -11,7 +11,7 @@ class AuthServices {
   dynamic SignUp(String username, String email, String password) async {
     try {
       var response = await _connect.post('http://10.0.2.2:8000/signup/',
-          {'username': username, 'email': email, 'password': password});
+          {'username': username, 'email': email, 'password': password,'role':'student'});
 
       if (response.statusCode == 200) {
         Get.snackbar('Signup Status:', 'Signup Successful');
@@ -49,7 +49,7 @@ class AuthServices {
       var response = await _connect
           .post('http://10.0.2.2:8000/forgot_password/', {'email': email});
       print(response);
-      
+
       if (response.statusCode == 200) {
         Get.snackbar('OTP Sent:', 'OTP Sent to your email');
         Get.off(const ChangePasswordScreen());

@@ -40,6 +40,7 @@ dependencies:
   http: ^1.1.0
   flutter_swipe_detector: ^2.0.0
   speech_to_text: ^6.4.0
+  hexcolor: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,7 @@ flutter:
   assets:
     - assets/images/mindcare-logo.png
     - assets/images/image-remove.png
+    - assets/images/greenimg.png
  
 
   # An image asset can refer to one or more resolution-specific "variants", see

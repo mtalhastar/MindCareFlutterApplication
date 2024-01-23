@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mindcareflutterapp/screens/authScreen.dart';
+import 'package:mindcareflutterapp/screens/chatScreen.dart';
 import 'package:mindcareflutterapp/screens/questionScreen.dart';
 
 void main() async {
@@ -12,6 +13,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(home: QuestionScreen());
+    return const GetMaterialApp(home: ChatScreen());
   }
 }

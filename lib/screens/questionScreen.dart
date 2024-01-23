@@ -26,7 +26,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
     super.initState();
     _initSpeech();
     counter = 0;
-    ResponseServices().getQuestionaires().then((value) {
+    getInitialQuestions();
+  }
+
+  void getInitialQuestions() async {
+    await ResponseServices().getQuestionaires().then((value) {
       questions = value;
 
       setState(() {
@@ -38,12 +42,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   void _initSpeech() async {
     _speechEnabled = await _speechToText.initialize();
+
     setState(() {});
   }
 
   /// Each time to start a speech recognition session
   void _startListening() async {
-    await _speechToText.listen(onResult: _onSpeechResult);
+    await _speechToText.listen(
+      onResult: _onSpeechResult,
+      listenFor: const Duration(minutes: 5),
+      pauseFor: const Duration(seconds: 15),
+    );
     setState(() {});
   }
 
@@ -52,7 +61,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
   /// and the SpeechToText plugin supports setting timeouts on the
   /// listen method.
   void _stopListening() async {
+    print("Stop listening called!");
     await _speechToText.stop();
+    _lastWords = '';
+    print('');
     setState(() {});
   }
 
@@ -83,13 +95,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     size: 30,
                   ),
                   const Spacer(),
-                  Text(
-                    '${counter + 1}/10',
-                    style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  )
+                  questions.isEmpty
+                      ? const Center(
+                          child: SizedBox(),
+                        )
+                      : Text(
+                          '${counter + 1}/${questions.length}',
+                          style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromRGBO(0, 0, 0, 1)),
+                        )
                 ],
               ),
             ),
@@ -107,29 +123,38 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              child: Text(
-                                loading == true
-                                    ? questions[counter].question
-                                    : '',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 32,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
+                            questions.isEmpty
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.green,
+                                    ),
+                                  )
+                                : SizedBox(
+                                    child: Text(
+                                      loading == true
+                                          ? questions[counter].question
+                                          : '',
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 32,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
                             const SizedBox(
                               height: 20,
                             ),
-                             SizedBox(
+                            SizedBox(
                               child: Text(
-                                  _speechToText.isListening
-                                  ? '$_lastWords': _speechEnabled ? 'Tap the microphone to start listening...': 'Speech not available',
+                                _speechToText.isListening
+                                    ? '$_lastWords'
+                                    : _speechEnabled
+                                        ? 'Tap the microphone to start listening...'
+                                        : 'Speech not available',
                                 textAlign: TextAlign.center,
-                                style: const  TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 24,
                                   fontFamily: 'Inter',
@@ -146,7 +171,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: InkWell(
-                        onTap: _speechToText.isNotListening ? _startListening : _stopListening,
+                        onTap: () {
+                          if (_speechToText.isListening) {
+                            _stopListening();
+                          } else {
+                            _startListening();
+                          }
+                        },
                         child: Container(
                           width: 100,
                           height: 100,
@@ -155,8 +186,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             color: Color(0xFFFFD600),
                             shape: OvalBorder(),
                           ),
-                          child: const Icon(
-                            Icons.mic,
+                          child: Icon(
+                            _speechToText.isNotListening
+                                ? Icons.mic
+                                : Icons.square,
                             size: 50,
                           ),
                         ),

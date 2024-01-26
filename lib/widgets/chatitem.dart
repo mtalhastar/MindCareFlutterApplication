@@ -1,19 +1,19 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChatItem extends StatelessWidget {
-  const ChatItem({super.key});
+  final String userName;
+  final String message;
+  final int messageCount;
+  const ChatItem({super.key, required this.userName, required this.message,required this.messageCount});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children:[
-      
-         Card(
-       shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20),
-        //set border radius more than 50% of height and width to make circle
-      ),
+    return Column(children: [
+      Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         child: Container(
           width: double.infinity,
           alignment: Alignment.center,
@@ -28,56 +28,56 @@ class ChatItem extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-          
-             Row(
-                  children: [
-                    SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: Image.asset('assets/images/image-remove.png')),
-                    const SizedBox(
-                      width: 20,
+              Row(
+                children: [
+                  SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: Image.asset('assets/images/image-remove.png')),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            userName,
+                            style: GoogleFonts.montserrat(color:Colors.black ,fontSize: 20),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            message,
+                            style: const TextStyle(
+                              color: Color(0xFFC7C2C2),
+                              fontSize: 13,
+                              fontStyle: FontStyle.italic,
+                              fontFamily: 'Istok Web',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: const Text(
-                              'Mr Bashir',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontFamily: 'Istok Web',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'How can we improve ...',
-                              style: TextStyle(
-                                color: Color(0xFFC7C2C2),
-                                fontSize: 13,
-                                fontStyle: FontStyle.italic,
-                                fontFamily: 'Istok Web',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  messageCount!=0?
+                  CircleAvatar(
+                    radius: 10,
+                    backgroundColor: Color.fromARGB(255, 11, 128, 54),child: Text(messageCount.toString(),style: const TextStyle(color: Colors.white,fontSize: 10),))
+                    :SizedBox()
+                ],
+              ),
             ],
           ),
         ),
       ),
-        SizedBox(height: 10,),
-      ]
-    );
+     const SizedBox(
+        height: 10,
+      ),
+    ]);
   }
 }

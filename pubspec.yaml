@@ -41,6 +41,7 @@ dependencies:
   flutter_swipe_detector: ^2.0.0
   speech_to_text: ^6.4.0
   hexcolor: ^3.0.1
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:

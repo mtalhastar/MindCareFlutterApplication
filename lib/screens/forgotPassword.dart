@@ -26,7 +26,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     _formKey.currentState!.save();
 
     AuthServices().ForgotPassword(email);
-
     _formKey.currentState!.reset();
   }
 
@@ -67,9 +66,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             height: 20,
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 5),
                             decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 255, 252, 252),
+                                color:const Color.fromARGB(255, 255, 252, 252),
                                 borderRadius: BorderRadius.circular(20.0)),
                             child: TextFormField(
                               decoration: const InputDecoration(
@@ -77,9 +77,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   border: InputBorder.none),
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
-                                if (value == null ||
-      
-                                    value.isEmpty) {
+                                if (value == null || value.isEmpty) {
                                   return 'Invalid Email';
                                 }
                                 return null;

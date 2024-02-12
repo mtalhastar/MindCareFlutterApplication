@@ -2,43 +2,71 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:mindcareflutterapp/screens/changePassword.dart';
 import 'package:mindcareflutterapp/screens/authScreen.dart';
+import 'package:mindcareflutterapp/screens/chatScreen.dart';
 import 'package:mindcareflutterapp/screens/questionScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices {
   final _connect = GetConnect();
   static var client = http.Client();
 
-  dynamic SignUp(String username, String email, String password) async {
+  Future<void> saveToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+  }
+
+  Future<String?> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  Future<void> SignUp(
+      String username, String email, String password, String role) async {
     try {
-      var response = await _connect.post('http://10.0.2.2:8000/signup/',
-          {'username': username, 'email': email, 'password': password,'role':'student'});
+      var response = await _connect.post('http://192.168.18.12:8000/signup/', {
+        'username': username,
+        'email': email,
+        'password': password,
+        'role': role
+      });
 
       if (response.statusCode == 200) {
         Get.snackbar('Signup Status:', 'Signup Successful');
-        Get.off(const QuestionScreen());
+        String token = response.body['token'];
+        await saveToken(token);
+
+        Get.off(const ChatScreen());
       } else {
         Get.snackbar('Signup Status:', 'Signup Failed');
       }
       print(response);
-      return response;
+      return response.body;
     } catch (e) {
       Get.snackbar('Signup Status:', 'Signup Failed');
     }
   }
 
-  dynamic Login(String email, String password) async {
+  Future<void> Login(String email, String password) async {
     try {
-      var response = await _connect.post('http://10.0.2.2:8000/login/',
+      var response = await _connect.post('http://192.168.18.12:8000/login/',
           {'email': email, 'password': password});
+
       if (response.statusCode == 200) {
-        Get.off(const QuestionScreen());
+        
+        String token = response.body['token'];
+        if (response.body['role'] == 'Admin' ||
+            response.body['role'] == 'Student') {
+          Get.snackbar('ERROR', '${response.body['role']} is not allowed ');
+          return;
+        }
+        Get.off(const ChatScreen());
+        await saveToken(token);
         Get.snackbar('Login Status:', 'Login Successful');
       } else {
         Get.snackbar('Error:', 'Login Failed');
       }
       print(response.statusCode);
       print(response.body);
-      return response;
     } catch (e) {
       Get.snackbar('Login Status:', 'Login Failed');
     }

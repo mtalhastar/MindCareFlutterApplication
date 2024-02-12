@@ -3,7 +3,6 @@ class Questionaire {
   int id;
   String question;
 
-
  factory Questionaire.fromJson(Map<String, dynamic> json) {
     return Questionaire(
       id: json['id'] as int,

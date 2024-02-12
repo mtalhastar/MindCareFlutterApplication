@@ -56,20 +56,24 @@ class _MessagingScreenState extends State<MessagingScreen> {
             color: const Color.fromARGB(255, 216, 233, 217),
             width: double.infinity,
             padding: EdgeInsets.all(10),
-            child:  Row(children: [
+            child: Row(children: [
               Expanded(
                 child: TextField(
                   decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Enter a message',
-                    hintStyle: GoogleFonts.montserrat(color: Colors.black, fontSize: 16)
-                  ),
+                      border: InputBorder.none,
+                      hintText: 'Enter a message',
+                      hintStyle: GoogleFonts.montserrat(
+                          color: Colors.black, fontSize: 16)),
                 ),
               ),
-             const CircleAvatar(
+              const CircleAvatar(
                 radius: 25,
                 backgroundColor: Colors.green,
-                child: Icon(Icons.send,color: Colors.white,),)
+                child: Icon(
+                  Icons.send,
+                  color: Colors.white,
+                ),
+              )
             ]),
           ),
         ),

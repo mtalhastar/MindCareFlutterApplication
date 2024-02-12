@@ -2,10 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:mindcareflutterapp/screens/authScreen.dart';
 import 'package:mindcareflutterapp/screens/messageScreen.dart';
+import 'package:mindcareflutterapp/services/authServices.dart';
 import 'package:mindcareflutterapp/widgets/chatitem.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mindcareflutterapp/controllers/chatController.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -15,7 +19,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
-
+  final controller = Get.put(ChatController());
   @override
   void initState() {
     // TODO: implement initState
@@ -62,7 +66,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    await AuthServices().saveToken("");
+                    Get.off(LoginScreen());
+                  },
                   child: ListTile(
                     leading: const Icon(
                       Icons.logout,
@@ -141,24 +148,24 @@ class _ChatScreenState extends State<ChatScreen> {
                       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: Container(
                         margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: ListView.builder(
+                        child: Obx(() => ListView.builder(
                             physics: const BouncingScrollPhysics(),
-                            itemCount: 7,
+                            itemCount: controller.chatUsers.length,
                             itemBuilder: (context, index) => InkWell(
                                   onTap: () {
-                                    //api request of message reset or scene
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 const MessagingScreen()));
                                   },
-                                  child: const ChatItem(
-                                    userName: 'Rashid',
-                                    message: 'Anwar',
+                                  child: ChatItem(
+                                    userName:
+                                        controller.chatUsers[index].username,
+                                    message: controller.chatUsers[index].email,
                                     messageCount: 4,
                                   ),
-                                )),
+                                ))),
                       ),
                     ),
                   ),

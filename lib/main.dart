@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mindcareflutterapp/screens/authScreen.dart';
 import 'package:mindcareflutterapp/screens/chatScreen.dart';
 import 'package:mindcareflutterapp/screens/questionScreen.dart';
-import 'package:mindcareflutterapp/storeBindings.dart';
+
 
 void main() async {
   runApp(const MyApp());

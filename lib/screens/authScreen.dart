@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mindcareflutterapp/screens/chatScreen.dart';
@@ -21,12 +23,14 @@ class _LoginScreenState extends State<LoginScreen> {
   File? image;
   bool showForm = false;
   double maxHeight = 450;
+  late Timer _timer;
   RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
   @override
   void initState() {
     // TODO: implement initState
     
     super.initState();
+ 
     animations();
     AuthServices().getToken().then((value) {
       if (value != "") {
@@ -35,9 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
   }
-
+   @override
+  void dispose() {
+    _timer.cancel(); // Cancel the timer to prevent calling setState after dispose
+    super.dispose();
+  }
   void animations() {
-    Future.delayed(const Duration(seconds: 2), () {
+   _timer=Timer(const Duration(seconds: 2), () {
       setState(() {
          showForm = true;
       });

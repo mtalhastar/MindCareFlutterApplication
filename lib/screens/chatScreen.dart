@@ -113,24 +113,35 @@ class _ChatScreenState extends State<ChatScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    child: const Center(
+                    child: Center(
                         child: Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
-                        Icon(
+                        const Icon(
                           Icons.search,
                           color: Color.fromARGB(109, 60, 59, 59),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        Text(
-                          'Search',
-                          style:
-                              TextStyle(color: Color.fromARGB(124, 45, 44, 44)),
-                        )
+                        Expanded(
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              hintText: 'Search',
+                              hintStyle: TextStyle(
+                                  color: Color.fromARGB(124, 45, 44, 44)),
+                              border: InputBorder.none,
+                            ),
+                            style: const TextStyle(
+                                color: Color.fromARGB(124, 45, 44, 44)),
+                            cursorColor: const Color.fromARGB(124, 45, 44, 44),
+                            onChanged: (value) {
+                              controller.searchResults(value);
+                            },
+                          ),
+                        ),
                       ],
                     )),
                   ),
@@ -148,24 +159,31 @@ class _ChatScreenState extends State<ChatScreen> {
                       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: Container(
                         margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Obx(() => ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: controller.chatUsers.length,
-                            itemBuilder: (context, index) => InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MessagingScreen()));
-                                  },
-                                  child: ChatItem(
-                                    userName:
-                                        controller.chatUsers[index].username,
-                                    message: controller.chatUsers[index].email,
-                                    messageCount: 4,
-                                  ),
-                                ))),
+                        child: Obx(() => controller.flag.value == false
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: controller.filteredlist.length,
+                                itemBuilder: (context, index) => InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MessagingScreen()));
+                                      },
+                                      child: ChatItem(
+                                        userName: controller
+                                            .filteredlist[index].username,
+                                        message:
+                                            controller.filteredlist[index].email,
+                                        messageCount: 4,
+                                      ),
+                                    ))),
                       ),
                     ),
                   ),

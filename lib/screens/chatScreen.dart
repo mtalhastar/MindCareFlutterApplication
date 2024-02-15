@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:mindcareflutterapp/controllers/profileController.dart';
+import 'package:mindcareflutterapp/models/user.dart';
 import 'package:mindcareflutterapp/screens/authScreen.dart';
 import 'package:mindcareflutterapp/screens/messageScreen.dart';
+import 'package:mindcareflutterapp/screens/profileScreen.dart';
 import 'package:mindcareflutterapp/services/authServices.dart';
+import 'package:mindcareflutterapp/services/chatServices.dart';
 import 'package:mindcareflutterapp/widgets/chatitem.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,12 +24,14 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   final controller = Get.put(ChatController());
+  final profileController = Get.put(ProfileController());
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Color.fromARGB(255, 67, 157, 70)));
+    profileController.fetchUserProfile();
   }
 
   @override
@@ -37,22 +43,58 @@ class _ChatScreenState extends State<ChatScreen> {
             child: ListView(
               children: [
                 Container(
-                  height: 150,
-                  width: double.infinity,
-                  color: const Color.fromARGB(146, 218, 224, 212),
-                  alignment: Alignment.center,
-                  child: const CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.black,
-                    child: Icon(
-                      Icons.person,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                    height: 150,
+                    width: double.infinity,
+                    color: const Color.fromARGB(146, 218, 224, 212),
+                    alignment: Alignment.center,
+                    child: Obx(
+                      () => CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.black,
+                        child: profileController.userProfile.value.imageUrl ==
+                                ''
+                            ? const Icon(
+                                Icons.person,
+                                size: 40,
+                                color: Colors.white,
+                              )
+                            : ClipOval(
+                                child: Image.network(
+                                  profileController.userProfile.value.imageUrl,
+                                  fit: BoxFit.cover,
+                                  width:
+                                      80.0, // Set width and height to ensure a circular image
+                                  height: 80.0,
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  }, // Ensure the image fills the circular area
+                                ),
+                              ),
+                      ),
+                    )),
                 InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    if (profileController.userProfile.value != null) {
+                      Get.to(
+                          Profile(user: profileController.userProfile.value));
+                    }
+                    ;
+                  },
                   child: ListTile(
                     leading: const Icon(
                       Icons.person,
@@ -68,7 +110,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 InkWell(
                   onTap: () async {
                     await AuthServices().saveToken("");
-                    Get.off(LoginScreen());
+                    Get.off(const LoginScreen());
                   },
                   child: ListTile(
                     leading: const Icon(
@@ -174,13 +216,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const MessagingScreen()));
+                                                    MessagingScreen(username: controller
+                                            .filteredlist[index].username,recieverId:controller
+                                            .filteredlist[index].userId.toString(),senderId:profileController.userProfile.value.userId.toString())));
                                       },
                                       child: ChatItem(
                                         userName: controller
                                             .filteredlist[index].username,
-                                        message:
-                                            controller.filteredlist[index].email,
+                                        message: controller
+                                            .filteredlist[index].email,
                                         messageCount: 4,
                                       ),
                                     ))),

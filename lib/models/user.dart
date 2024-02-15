@@ -1,6 +1,6 @@
 class User {
   final int id;
-  final String imageUrl;
+  String imageUrl;
   final int userId;
   final String username;
   final String email;

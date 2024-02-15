@@ -22,7 +22,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
   bool loading = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initSpeech();
     counter = 0;

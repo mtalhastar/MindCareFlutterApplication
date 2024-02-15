@@ -6,6 +6,7 @@ import 'package:mindcareflutterapp/screens/chatScreen.dart';
 import 'dart:io';
 import 'package:mindcareflutterapp/services/authServices.dart';
 import 'package:mindcareflutterapp/screens/forgotPassword.dart';
+import 'package:mindcareflutterapp/services/chatServices.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,16 +29,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    
     super.initState();
- 
     animations();
     AuthServices().getToken().then((value) {
-      if (value != "") {
+      if (value!='') {
         Get.off(const ChatScreen());
       }
     });
-
   }
    @override
   void dispose() {

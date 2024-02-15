@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
+import 'package:mindcareflutterapp/models/message.dart';
 import 'package:mindcareflutterapp/models/user.dart';
 import 'package:mindcareflutterapp/services/chatServices.dart';
 
 class ChatController extends GetxController {
   List<User> chatUsers = <User>[].obs;
   List<User> filteredlist = <User>[].obs;
+  List<Message> chatmessagas = <Message>[].obs;
   var flag = false.obs;
 
   @override
@@ -22,6 +24,11 @@ class ChatController extends GetxController {
     flag.value = true;
   }
 
+  void fetchChatMessages(String recieverId) async {
+    var chat = await ChatServices().getChatMessages(recieverId);
+    chatmessagas.addAll(chat);
+  }
+
   List<User> getUsers() {
     return chatUsers;
   }
@@ -32,8 +39,10 @@ class ChatController extends GetxController {
       filteredlist.assignAll(chatUsers);
     } else {
       // Filter the chatUsers list based on the search query
-      filteredlist.assignAll(chatUsers.where((element) =>
-          element.username.toLowerCase().contains(username.toLowerCase())).toList());
+      filteredlist.assignAll(chatUsers
+          .where((element) =>
+              element.username.toLowerCase().contains(username.toLowerCase()))
+          .toList());
     }
   }
 }

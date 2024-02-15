@@ -4,7 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mindcareflutterapp/widgets/messageItem.dart';
 
 class MessagingScreen extends StatefulWidget {
-  const MessagingScreen({super.key});
+  String username;
+  String recieverId;
+  String senderId;
+  MessagingScreen(
+      {super.key,
+      required this.username,
+      required this.recieverId,
+      required this.senderId});
 
   @override
   State<MessagingScreen> createState() => _MessagingScreenState();
@@ -12,11 +19,17 @@ class MessagingScreen extends StatefulWidget {
 
 class _MessagingScreenState extends State<MessagingScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Mr Bashir',
+          widget.username,
           style: GoogleFonts.montserrat(color: Colors.black, fontSize: 20),
         ),
         centerTitle: true,

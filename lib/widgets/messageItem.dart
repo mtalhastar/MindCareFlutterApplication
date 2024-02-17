@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mindcareflutterapp/controllers/profileController.dart';
 
 class MessageItem extends StatelessWidget {
   final String message;
   final String uid;
   final String time;
 
-  const MessageItem(
+  MessageItem(
       {super.key,
       required this.message,
       required this.uid,
       required this.time});
 
+  final controller = Get.find<ProfileController>();
+  
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children:[ Align(
-          alignment: uid == '1' ? Alignment.centerLeft : Alignment.centerRight,
+    return Column(children: [
+      Align(
+          alignment: uid == controller.userProfile.value.userId.toString() ? Alignment.centerLeft : Alignment.centerRight,
           child: Card(
               shape: RoundedRectangleBorder(
-                borderRadius: uid == '1'
+                borderRadius: uid == controller.userProfile.value.userId.toString()
                     ? const BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15),
@@ -31,11 +35,11 @@ class MessageItem extends StatelessWidget {
                         bottomLeft: Radius.circular(15),
                         bottomRight: Radius.circular(0)),
               ),
-              color: uid == '1'
+              color: uid == controller.userProfile.value.userId.toString()
                   ? Colors.green
                   : const Color.fromARGB(255, 14, 95, 17),
-              elevation: 8,
-              margin: uid == '1'
+              elevation: 4,
+              margin: uid == controller.userProfile.value.toString()
                   ? const EdgeInsets.fromLTRB(10, 10, 40, 10)
                   : const EdgeInsets.fromLTRB(40, 10, 10, 10),
               child: Padding(
@@ -47,13 +51,12 @@ class MessageItem extends StatelessWidget {
                       fontSize: 16),
                 ),
               ))),
-               Container(
-                      alignment:  uid == '1'?Alignment.centerLeft:Alignment.centerRight,
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(time,style: GoogleFonts.montserrat(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontSize: 13)))
-      ]
-    );
+      Container(
+          alignment: uid == controller.userProfile.value.userId .toString()? Alignment.centerLeft : Alignment.centerRight,
+          margin:const EdgeInsets.symmetric(horizontal: 10),
+          child: Text(time,
+              style: GoogleFonts.montserrat(
+                  color: const Color.fromARGB(255, 0, 0, 0), fontSize: 13)))
+    ]);
   }
 }

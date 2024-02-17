@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     animations();
     AuthServices().getToken().then((value) {
-      if (value!='') {
+      if (value!='' || value!=null) {
         Get.off(const ChatScreen());
       }
     });

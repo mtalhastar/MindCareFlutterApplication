@@ -8,7 +8,7 @@ class ChatController extends GetxController {
   List<User> filteredlist = <User>[].obs;
   List<Message> chatmessagas = <Message>[].obs;
   var flag = false.obs;
-
+  var flagLoader = false.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -17,16 +17,19 @@ class ChatController extends GetxController {
     fetchChatUsers();
   }
 
-  void fetchChatUsers() async {
+  Future<void> fetchChatUsers() async {
     var chat = await ChatServices().getChatUsers();
     chatUsers.addAll(chat);
     filteredlist.assignAll(chatUsers);
     flag.value = true;
   }
 
-  void fetchChatMessages(String recieverId) async {
+  Future<void> fetchChatMessages(String recieverId) async {
+    chatmessagas.clear();
+    flagLoader.value = false;
     var chat = await ChatServices().getChatMessages(recieverId);
-    chatmessagas.addAll(chat);
+    chatmessagas.assignAll(chat);
+    flagLoader.value = true;
   }
 
   List<User> getUsers() {

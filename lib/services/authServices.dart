@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:mindcareflutterapp/screens/changePassword.dart';
@@ -9,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthServices {
   final _connect = GetConnect();
   static var client = http.Client();
+  String url = "192.168.18.12";
 
   Future<void> saveToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -23,7 +26,7 @@ class AuthServices {
   Future<void> SignUp(
       String username, String email, String password, String role) async {
     try {
-      var response = await _connect.post('http://192.168.18.12:8000/signup/', {
+      var response = await _connect.post('http://${url}:8000/signup/', {
         'username': username,
         'email': email,
         'password': password,
@@ -48,15 +51,20 @@ class AuthServices {
 
   Future<void> Login(String email, String password) async {
     try {
-      var response = await _connect.post('http://192.168.18.12:8000/login/',
-          {'email': email, 'password': password});
+      var response = await http.post(
+        Uri.parse('http://${url}:8000/login/'),
+        body: {
+          'email': email,
+          'password': password,
+        },
+      );
 
       if (response.statusCode == 200) {
-        
-        String token = response.body['token'];
-        if (response.body['role'] == 'Admin' ||
-            response.body['role'] == 'Student') {
-          Get.snackbar('ERROR', '${response.body['role']} is not allowed ');
+        String token = jsonDecode(response.body)['token'];
+        if (jsonDecode(response.body)['role'] == 'Admin' ||
+            jsonDecode(response.body)['role'] == 'Student') {
+          Get.snackbar(
+              'ERROR', '${jsonDecode(response.body)['role']} is not allowed ');
           return;
         }
         Get.off(const ChatScreen());
@@ -68,6 +76,7 @@ class AuthServices {
       print(response.statusCode);
       print(response.body);
     } catch (e) {
+      print(e);
       Get.snackbar('Login Status:', 'Login Failed');
     }
   }
@@ -75,7 +84,7 @@ class AuthServices {
   Future<dynamic> ForgotPassword(String email) async {
     try {
       var response = await _connect
-          .post('http://10.0.2.2:8000/forgot_password/', {'email': email});
+          .post('http://${url}/forgot_password/', {'email': email});
       print(response);
 
       if (response.statusCode == 200) {
@@ -92,8 +101,7 @@ class AuthServices {
 
   dynamic ChangePassword(String verificationCode, String newpassword) async {
     try {
-      var response = await _connect.post(
-          'http://10.0.2.2:8000/change_password/',
+      var response = await _connect.post('http://${url}/change_password/',
           {'vcode': verificationCode, 'password': newpassword});
 
       if (response.statusCode == 200) {

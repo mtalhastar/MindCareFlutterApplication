@@ -29,14 +29,15 @@ class MessagingScreen extends StatefulWidget {
 class _MessagingScreenState extends State<MessagingScreen> {
   final controller = Get.find<ChatController>();
   late ScrollController _scrollController;
+  final textcontroller = TextEditingController();
   String message = '';
+  bool isSent = false;
   @override
   void initState() {
     // TODO: implement initState
     Future.delayed(Duration.zero, () async {
       await controller.fetchChatMessages(widget.recieverId);
 
-    
       //here is the async code, you can execute any async code here
       print('scrollnow');
     });
@@ -68,6 +69,8 @@ class _MessagingScreenState extends State<MessagingScreen> {
       int senderId = messages["senderid"];
       int receiverId = messages["receiverid"];
 
+      print('message sent');
+
       controller.chatmessagas.insert(
           0,
           (Message(
@@ -78,15 +81,8 @@ class _MessagingScreenState extends State<MessagingScreen> {
               receiverId: receiverId,
               timestamp: DateTime.now())));
 
-      // _scrollToBottom();
-      // channel.sink.add('received!');
-      // channel.sink.close(status.goingAway);
+      channel.sink.close(status.goingAway);
     });
-  }
-
-  String _extractTime(String iso8601String) {
-    DateTime dateTime = DateTime.parse(iso8601String);
-    return '${dateTime.hour}:${dateTime.minute}';
   }
 
   @override
@@ -109,19 +105,17 @@ class _MessagingScreenState extends State<MessagingScreen> {
           () => controller.flagLoader.value == true
               ? ListView.builder(
                   reverse: true,
-                  physics: BouncingScrollPhysics(),
-                
+                  physics: const BouncingScrollPhysics(),
                   itemCount: controller.chatmessagas
                       .length, // Specify the number of items you want to display
                   itemBuilder: (BuildContext context, int index) {
-                    return Obx(() => MessageItem(
+                    return Obx(
+                      () => MessageItem(
                           message: controller.chatmessagas[index].content,
                           uid: controller.chatmessagas[index].senderId
                               .toString(),
-                          time: _extractTime(controller
-                              .chatmessagas[index].timestamp
-                              .toIso8601String()),
-                        ));
+                          time: controller.chatmessagas[index].timestamp),
+                    );
                   },
                 )
               : const Center(
@@ -139,6 +133,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
             child: Row(children: [
               Expanded(
                 child: TextField(
+                  controller: textcontroller,
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Enter a message',
@@ -156,16 +151,30 @@ class _MessagingScreenState extends State<MessagingScreen> {
               Obx(() => controller.flagLoader.value == true
                   ? GestureDetector(
                       onTap: () async {
-                        await ChatServices()
-                            .sendMessage(message, widget.recieverId);
+                        if (message.isNotEmpty) {
+                          setState(() {
+                            isSent = true;
+                          });
+                          await ChatServices()
+                              .sendMessage(message, widget.recieverId);
+                          setState(() {
+                            isSent = false;
+                            textcontroller.clear();
+                          });
+                        }
                       },
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: 25,
-                        backgroundColor: Color.fromARGB(255, 84, 175, 76),
-                        child: Icon(
-                          Icons.send,
-                          color: Color.fromARGB(255, 253, 253, 253),
-                        ),
+                        backgroundColor: const Color.fromARGB(255, 84, 175, 76),
+                        child: isSent == false
+                            ? const Icon(
+                                Icons.send,
+                                color: Color.fromARGB(255, 253, 253, 253),
+                              )
+                            : const Center(
+                                child: CircularProgressIndicator(
+                                    color: Colors.white),
+                              ),
                       ),
                     )
                   : const CircleAvatar(

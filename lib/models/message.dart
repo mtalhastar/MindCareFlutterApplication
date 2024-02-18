@@ -6,7 +6,6 @@ class Message {
   final int receiverId;
   final DateTime timestamp;
 
-
   Message({
     required this.id,
     required this.content,
@@ -23,7 +22,7 @@ class Message {
       seen: json['seen'] as bool,
       senderId: json['senderid'] as int,
       receiverId: json['receiverid'] as int,
-      timestamp: DateTime.parse(json['timestamp'] as String),
+      timestamp: DateTime.parse(json['timestamp']).toLocal(),
     );
   }
 
@@ -34,7 +33,7 @@ class Message {
     data['seen'] = seen;
     data['senderid'] = senderId;
     data['receiverid'] = receiverId;
-    data['timestamp'] = timestamp.toIso8601String();
+    data['timestamp'] = timestamp;
     return data;
   }
 }

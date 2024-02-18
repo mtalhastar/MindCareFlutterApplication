@@ -64,11 +64,7 @@ class ChatItem extends StatelessWidget {
                       ],
                     ),
                   ),
-                  messageCount!=0?
-                  CircleAvatar(
-                    radius: 10,
-                    backgroundColor: Color.fromARGB(255, 11, 128, 54),child: Text(messageCount.toString(),style: const TextStyle(color: Colors.white,fontSize: 10),))
-                    :SizedBox()
+                 
                 ],
               ),
             ],

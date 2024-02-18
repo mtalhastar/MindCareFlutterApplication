@@ -6,7 +6,7 @@ import 'package:mindcareflutterapp/controllers/profileController.dart';
 class MessageItem extends StatelessWidget {
   final String message;
   final String uid;
-  final String time;
+  final DateTime time;
 
   MessageItem(
       {super.key,
@@ -15,31 +15,34 @@ class MessageItem extends StatelessWidget {
       required this.time});
 
   final controller = Get.find<ProfileController>();
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       Align(
-          alignment: uid == controller.userProfile.value.userId.toString() ? Alignment.centerLeft : Alignment.centerRight,
+          alignment: uid == controller.userProfile.value.userId.toString()
+              ? Alignment.centerLeft
+              : Alignment.centerRight,
           child: Card(
               shape: RoundedRectangleBorder(
-                borderRadius: uid == controller.userProfile.value.userId.toString()
-                    ? const BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15),
-                        bottomLeft: Radius.circular(0),
-                        bottomRight: Radius.circular(15))
-                    : const BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15),
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(0)),
+                borderRadius:
+                    uid == controller.userProfile.value.userId.toString()
+                        ? const BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                            bottomLeft: Radius.circular(0),
+                            bottomRight: Radius.circular(15))
+                        : const BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                            bottomLeft: Radius.circular(15),
+                            bottomRight: Radius.circular(0)),
               ),
               color: uid == controller.userProfile.value.userId.toString()
                   ? Colors.green
                   : const Color.fromARGB(255, 14, 95, 17),
               elevation: 4,
-              margin: uid == controller.userProfile.value.toString()
+              margin: uid == controller.userProfile.value.userId.toString()
                   ? const EdgeInsets.fromLTRB(10, 10, 40, 10)
                   : const EdgeInsets.fromLTRB(40, 10, 10, 10),
               child: Padding(
@@ -52,9 +55,11 @@ class MessageItem extends StatelessWidget {
                 ),
               ))),
       Container(
-          alignment: uid == controller.userProfile.value.userId .toString()? Alignment.centerLeft : Alignment.centerRight,
-          margin:const EdgeInsets.symmetric(horizontal: 10),
-          child: Text(time,
+          alignment: uid == controller.userProfile.value.userId.toString()
+              ? Alignment.centerLeft
+              : Alignment.centerRight,
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          child: Text("${time.hour}:${time.minute} ",
               style: GoogleFonts.montserrat(
                   color: const Color.fromARGB(255, 0, 0, 0), fontSize: 13)))
     ]);

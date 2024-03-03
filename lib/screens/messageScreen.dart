@@ -58,7 +58,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
 
   void webSocketConnection() async {
     final wsUrl = Uri.parse(
-        'ws://192.168.18.12:8000/ws/chating/${widget.senderId}/${widget.recieverId}/');
+        'ws://54.91.156.11:8000/ws/chating/${widget.senderId}/${widget.recieverId}/');
     final channel = WebSocketChannel.connect(wsUrl);
 
     await channel.ready;
@@ -80,9 +80,8 @@ class _MessagingScreenState extends State<MessagingScreen> {
               senderId: senderId,
               receiverId: receiverId,
               timestamp: DateTime.now())));
-
-      channel.sink.close(status.goingAway);
     });
+    channel.sink.close(status.goingAway);
   }
 
   @override

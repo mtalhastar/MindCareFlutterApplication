@@ -16,7 +16,7 @@ import 'package:mindcareflutterapp/services/authServices.dart';
 class ChatServices {
   final _connect = GetConnect();
   static var client = http.Client();
-  String url = "192.168.18.12";
+  String url = "54.91.156.11";
 
   Future<List<User>> getChatUsers() async {
     String? token = await AuthServices().getToken();

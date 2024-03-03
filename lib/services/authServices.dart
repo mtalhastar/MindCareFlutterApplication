@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthServices {
   final _connect = GetConnect();
   static var client = http.Client();
-  String url = "192.168.18.12";
+  String url = "54.91.156.11";
 
   Future<void> saveToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

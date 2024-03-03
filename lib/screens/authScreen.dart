@@ -31,21 +31,28 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
     animations();
+     
     AuthServices().getToken().then((value) {
-      if (value!='' || value!=null) {
-        Get.off(const ChatScreen());
+      
+      if (value==null||value.isEmpty) {
+       
+      }else{
+         Get.off(const ChatScreen());
       }
     });
   }
-   @override
+
+  @override
   void dispose() {
-    _timer.cancel(); // Cancel the timer to prevent calling setState after dispose
+    _timer
+        .cancel(); // Cancel the timer to prevent calling setState after dispose
     super.dispose();
   }
+
   void animations() {
-   _timer=Timer(const Duration(seconds: 2), () {
+    _timer = Timer(const Duration(seconds: 2), () {
       setState(() {
-         showForm = true;
+        showForm = true;
       });
     });
   }

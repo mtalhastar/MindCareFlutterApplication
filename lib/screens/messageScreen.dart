@@ -30,6 +30,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
   final controller = Get.find<ChatController>();
   late ScrollController _scrollController;
   final textcontroller = TextEditingController();
+  late WebSocketChannel channel;
   String message = '';
   bool isSent = false;
   @override
@@ -56,10 +57,17 @@ class _MessagingScreenState extends State<MessagingScreen> {
   //   }
   // }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    channel.sink.close(status.goingAway);
+  }
+
   void webSocketConnection() async {
     final wsUrl = Uri.parse(
         'ws://54.91.156.11:8000/ws/chating/${widget.senderId}/${widget.recieverId}/');
-    final channel = WebSocketChannel.connect(wsUrl);
+    channel = WebSocketChannel.connect(wsUrl);
 
     await channel.ready;
     print('is ready');
@@ -81,7 +89,6 @@ class _MessagingScreenState extends State<MessagingScreen> {
               receiverId: receiverId,
               timestamp: DateTime.now())));
     });
-    channel.sink.close(status.goingAway);
   }
 
   @override

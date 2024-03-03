@@ -98,8 +98,8 @@ class ChatServices {
       Get.snackbar('error', 'User not loggedin');
     } else {
       try {
-        var response = await _connect.post(
-            'http://${url}:8000/chat/updateProfile/', {"image": imageurl},
+        var response = await http.post(
+           Uri.parse('http://${url}:8000/chat/updateProfile/'), body:{"image": imageurl},
             headers: {'Authorization': 'Token $token'});
         if (response.body != null) {
           if (response.statusCode == 200) {
@@ -126,9 +126,9 @@ class ChatServices {
       Get.snackbar('error', 'User not loggedin');
     } else {
       try {
-        var response = await _connect.post(
-            'http://${url}:8000/chat/sendMessage/${recieverId}/',
-            {"content": message},
+        var response = await http.post(Uri.parse(
+            'http://${url}:8000/chat/sendMessage/${recieverId}/'),
+            body:{"content": message},
             headers: {'Authorization': 'Token $token'});
         if (response.body != null) {
           if (response.statusCode == 200) {

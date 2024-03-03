@@ -26,7 +26,7 @@ class AuthServices {
   Future<void> SignUp(
       String username, String email, String password, String role) async {
     try {
-      var response = await _connect.post('http://${url}:8000/signup/', {
+      var response = await http.post(Uri.parse('http://${url}:8000/signup/'), body:{
         'username': username,
         'email': email,
         'password': password,
@@ -35,7 +35,7 @@ class AuthServices {
 
       if (response.statusCode == 200) {
         Get.snackbar('Signup Status:', 'Signup Successful');
-        String token = response.body['token'];
+        String token = jsonDecode(response.body)['token'];
         await saveToken(token);
 
         Get.off(const ChatScreen());
@@ -43,7 +43,6 @@ class AuthServices {
         Get.snackbar('Signup Status:', 'Signup Failed');
       }
       print(response);
-      return response.body;
     } catch (e) {
       Get.snackbar('Signup Status:', 'Signup Failed');
     }
@@ -83,9 +82,8 @@ class AuthServices {
 
   Future<dynamic> ForgotPassword(String email) async {
     try {
-      var response = await _connect
-          .post('http://${url}/forgot_password/', {'email': email});
-      print(response);
+      var response = await http
+          .post(Uri.parse('http://${url}/forgot_password/'), body:{'email': email});
 
       if (response.statusCode == 200) {
         Get.snackbar('OTP Sent:', 'OTP Sent to your email');
@@ -101,8 +99,8 @@ class AuthServices {
 
   dynamic ChangePassword(String verificationCode, String newpassword) async {
     try {
-      var response = await _connect.post('http://${url}/change_password/',
-          {'vcode': verificationCode, 'password': newpassword});
+      var response = await http.post(Uri.parse('http://${url}/change_password/'),
+          body:{'vcode': verificationCode, 'password': newpassword});
 
       if (response.statusCode == 200) {
         Get.off(const LoginScreen(),
